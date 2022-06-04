@@ -1,5 +1,3 @@
-from random import choices
-from secrets import choice
 import pandas as pd
 from datetime import date
 from datetime import timedelta
@@ -63,7 +61,6 @@ def count_total(input_frame):
 	ending = date.fromisoformat(meta_dates[-1])
 	while begin < ending:
 		period = begin + week
-		print(f"working on period {period}")
 		count_total = 0
 		count_locality = 0
 		for row in input_frame.itertuples():
@@ -73,11 +70,10 @@ def count_total(input_frame):
 				count_total += 1
 				if pd.notnull(row.location):
 					count_locality += 1
-		print(f"For period between {begin} and {period} we had {count_total} sequences")
 		temp_frame = temp_frame.append({'period': f"{begin}_{period}",
 			"count_total": count_total, "count_locality": count_locality}, ignore_index=True)
 		begin += week
-	file_name = "all_sample_period_counts.csv"
+	file_name = "results/all_sample_period_counts.csv"
 	temp_frame.to_csv(file_name, index = False)
 
 #Add whether seq has locality data or not
@@ -90,7 +86,6 @@ def check_loc(input_frame):
 			no_count += 1
 		else:
 			input_frame.at[index[0], 'with_locality'] = 'yes'
-	print(no_count)
 	return input_frame
 
 #Count seq for each period for each lab of and write new csv
@@ -103,7 +98,6 @@ def count_period_cases(lab, case_data):
 	while begin < ending:
 		period = begin + week
 		count = 0
-		print(f"Looking at {begin}_{period} right now, hold tight.")
 		for row in temp_dict:
 			if row['submitting_lab'] == lab:
 				if begin <= date.fromisoformat(row['date']) <= period:
