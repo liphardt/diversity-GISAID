@@ -148,12 +148,12 @@ def pull_meta_seqs(meta_frame, sequences):
 		unique_dates.append(str(row.time_period))
 	unique_dates = set(unique_dates)
 	for period in unique_dates:
-		if period != "nan":
+		if period != "nan" and period != "":
 			path = os.path.join(parent_dir, period)
 			os.makedirs(path)
 
 	for period in unique_dates:
-		if period != "nan":
+		if period != "nan" and period != "":
 			begin = date.fromisoformat(period.split("_")[0])
 			end = date.fromisoformat(period.split("_")[1])
 			filename = f"{parent_dir}/{period}/{period}_meta.csv"
