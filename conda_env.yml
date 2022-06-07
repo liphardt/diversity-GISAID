@@ -1,0 +1,16 @@
+name: covid_diversity_plots
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - biopython
+  - pandas
+  - numpy
+  - nextstrain-cli
+  - python>=3.7
+  - augur
+  - auspice
+  - nextalign
+  - snakemake
+  - git
