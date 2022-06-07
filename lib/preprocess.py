@@ -140,48 +140,47 @@ def count_labs(input_frame):
 	temp_frame.to_csv(file_name, index = False)	
 
 def pull_meta_seqs(meta_frame, sequences):
-	fastas = list(SeqIO.parse(sequences, "fasta"))
-	metadict = meta_frame.to_dict('records')
-	unique_dates = []
-	parent_dir = "results/week_subset"
-	for row in meta_frame.itertuples():
-		unique_dates.append(str(row.time_period))
-	unique_dates = set(unique_dates)
-	for period in unique_dates:
-		if period != "nan" and period != "":
-			path = os.path.join(parent_dir, period)
-			os.makedirs(path)
-
-	for period in unique_dates:
-		if period != "nan" and period != "":
-			begin = date.fromisoformat(period.split("_")[0])
-			end = date.fromisoformat(period.split("_")[1])
-			filename = f"{parent_dir}/{period}/{period}_meta.csv"
-			temp_meta = pd.DataFrame(columns = meta_frame.columns)
-			for record in metadict:
-				if record['date'] != "nan":
-					if begin <= date.fromisoformat(record['date']) <= end:
-						temp_frame = pd.DataFrame(record, index = [0])
-						temp_meta = pd.concat([temp_meta, temp_frame], ignore_index = True)
-			temp_meta.to_csv(filename, index = False)
-	
-	for root,dirs,files in os.walk(parent_dir):
-		for file in files:
-			full_file = os.path.join(root, file)
-			month_data = pd.read_csv(full_file)
-			temp_fasta = []
-			for row in month_data.itertuples():
-				period = file.split(".")[0]
-				file_name = f"{period}.sequences.fasta"
-				pathway = os.path.join(root,file_name)    
-				for seq in fastas:
-					if seq.id == row.strain:
-						if len(seq.seq) > 28000:
-							temp_fasta.append(seq)
-				if len(temp_fasta) > 2:
-					with open(pathway, "w") as handle:
-						SeqIO.write(temp_fasta, handle, "fasta")
-
+        fastas = list(SeqIO.parse(sequences, "fasta"))
+        fasta_dict = {}
+        for i in range(0,len(fastas)):
+            fasta_dict[fastas[i].id] = fastas[i]
+        metadict = meta_frame.to_dict('records')
+        unique_dates = []
+        parent_dir = "results/week_subset"
+        for row in meta_frame.itertuples():
+            unique_dates.append(str(row.time_period))
+        unique_dates = set(unique_dates)
+        for period in unique_dates:
+            if period != "nan" and period != "":
+                path = os.path.join(parent_dir, period)
+                os.makedirs(path)
+        for period in unique_dates:
+            if period != "nan" and period != "":
+                begin = date.fromisoformat(period.split("_")[0])
+                end = date.fromisoformat(period.split("_")[1])
+                filename = f"{parent_dir}/{period}/{period}_meta.csv"
+                temp_meta = pd.DataFrame(columns = meta_frame.columns)
+                for record in metadict:
+                    if record['date'] != "nan":
+                        if begin <= date.fromisoformat(record['date']) <= end:
+                            temp_frame = pd.DataFrame(record, index = [0])
+                            temp_meta = pd.concat([temp_meta, temp_frame], ignore_index = True)
+                temp_meta.to_csv(filename, index = False)
+        for root,dirs,files in os.walk(parent_dir):
+            for file in files:
+                full_file = os.path.join(root, file)
+                month_data = pd.read_csv(full_file)
+                temp_fasta = []
+                period = file.split(".")[0]
+                file_name = f"{period}.sequences.fasta"
+                pathway = os.path.join(root,file_name)
+                for row in month_data.itertuples():
+                    seq = fasta_dict[row.strain]
+                    if len(seq.seq) > 28000:
+                        temp_fasta.append(seq)
+                if len(temp_fasta) > 2:
+                    with open(pathway, "w") as handle:
+                        SeqIO.write(temp_fasta, handle, "fasta")
 
 if __name__ == "__main__":
 	#Set globals and read input data
