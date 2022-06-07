@@ -207,11 +207,11 @@ full_plot <- ggplot(data = nuc_diversity_all, aes(x = period, group = 1)) +
   scale_color_manual(name = "", values = c("blue", "red", "green")) +
   geom_area(aes(y = count_divide, fill = count_divide), stat = "identity", fill = "deepskyblue1", alpha = 0.3) +
   theme(panel.background = element_rect(fill = "white", colour = "grey50")) +
-  scale_x_discrete(breaks = c("2020-01-01_2020-01-08", "2020-11-18_2020-11-25", "2021-11-17_2021-11-24", "2022-01-19_2022-01-26",
-                              "2022-05-25_2022-06-01"), labels = c("January, 2020", "November, 2020", "November, 2021", "January, 2022", "May, 2022"), 
+  scale_x_discrete(breaks = c("2020-01-01_2020-01-08", "2020-02-26_2020-03-04", "2020-04-29_2020-05-06", "2020-07-01_2020-07-08", "2020-08-26_2020-09-02", "2020-11-04_2020-11-11", "2020-12-30_2021-01-06", "2021-02-24_2021-03-03", "2021-04-28_2021-05-05", "2021-06-30_2021-07-07", "2021-08-25_2021-09-01", "2021-10-27_2021-11-03", "2021-12-29_2022-01-05", "2022-02-23_2022-03-02", "2022-04-27_2022-05-04"),
+                   labels = c("1/20","3/20","5/20","7/20","9/20","11/20","1/21","3/21","5/21","7/21","9/21","11/21","1/22","3/22","5/22"), 
                    expand = c(0,0)) + 
-  labs(y = expression("Nucleotide diversity ("~pi~")")) +
+  labs(title = prefix, x = "Time", y = expression("Nucleotide diversity ("~pi~")")) +
   scale_y_continuous(sec.axis = sec_axis(trans=~.*1000, name = "Weekly cases"))
 
-nuc_plot_name <- paste0("results/nuc_diversity", prefix, "_nucleotide_diversity.pdf")
+nuc_plot_name <- paste0("results/", prefix, "_nucleotide_diversity.pdf")
 ggsave(nuc_plot_name, height = 8, width = 11, units = "in")
