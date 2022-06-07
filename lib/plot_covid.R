@@ -135,7 +135,7 @@ spike_only <- detail.stats(spike_only)
 
 nuc_diversity <- all_fastas@Pi
 rows <- rownames(nuc_diversity)
-rows <- str_remove_all(rows, ".aligned.fasta")
+rows <- str_remove_all(rows, ".fasta")
 nuc_diversity <- rownames_to_column(data_frame(nuc_diversity))
 nuc_diversity$rowname <- rows
 colnames(nuc_diversity) <- c("period", "Pi")
