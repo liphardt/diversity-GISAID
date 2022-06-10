@@ -202,8 +202,7 @@ weekly_case_plot <- ggplot(data = nuc_diversity_all, aes(x = period, y = count, 
 
 full_plot <- ggplot(data = nuc_diversity_all, aes(x = period, group = 1)) +
   geom_smooth(aes(y = Pi, colour = "Genome-wide"), stat = "smooth", position = "identity", show.legend = T, span = 0.2, alpha = 0.2) +
-  geom_smooth(aes(y = SpikePi, colour = "Spike protein"), stat = "smooth", position = "identity", show.legend = T, span = 0.2, alpha = 0.2,
-              linetype = "dashed") +
+  geom_smooth(aes(y = SpikePi, colour = "Spike protein"), stat = "smooth", position = "identity", show.legend = T, span = 0.2, alpha = 0.2) +
   scale_color_manual(name = "", values = c("blue", "red", "green")) +
   geom_area(aes(y = count_divide, fill = count_divide), stat = "identity", fill = "deepskyblue1", alpha = 0.3) +
   theme(panel.background = element_rect(fill = "white", colour = "grey50")) +
