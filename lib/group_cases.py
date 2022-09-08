@@ -22,9 +22,14 @@ def group_cases_by_state(state):
             current_state = record['Code']
 
     print(current_state)
-    is_current_state = case_data['state'] == current_state
-    state_data = case_data[is_current_state]
-    state_data = state_data.to_dict('records')
+    if current_state != "All":
+        is_current_state = case_data['state'] == current_state
+        state_data = case_data[is_current_state]
+        state_data = state_data.to_dict('records')
+    else:
+        is_current_state = case_data
+        state_data = case_data[is_current_state]
+        state_data = state_data.to_dict('records')
     
     for row in state_data:
         temp_date = row['submission_date'].split("/")
@@ -35,7 +40,6 @@ def group_cases_by_state(state):
         row['submission_date'] = f"{temp_date[2]}-{temp_date[0]}-{temp_date[1]}"
 
     state_data = pd.DataFrame.from_dict(state_data)
-    print(state_data)
 
     start = date.fromisoformat('2020-01-01')
     end = date.fromisoformat(sorted(state_data.submission_date)[-1])

@@ -44,6 +44,7 @@ if __name__ == "__main__":
     print("to download latest case data.")
     gc.group_cases_by_state(args.state)
     print("Finished grouping state data.")
+    subprocess.run("sed -i '/^[^>]/ s/-/N/g' results/aligned_fastas/*",shell=True)
     print("Calculating variant replacement and nucleotide diversity through time.")
     r_args = ["Rscript", r_script, f"results/{args.state}_processed_metadata.csv", f"results/{args.state}_all_case_data.csv", f"results/{args.state}_case_period_counts.csv", args.state]
     print(r_args)
